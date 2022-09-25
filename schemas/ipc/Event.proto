@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+import "common/Domain.proto";
+
+option java_package = "edu.rit.se.sars.communication.proto.ipc.event";
+option java_multiple_files = true;
+
+
+message Event {
+    message CommandCompletedEvent {}
+
+    message BatteryStatusEvent {
+        float percentageRemaining = 1;
+    }
+
+    message PositionStatusEvent {
+        GeoLocation3D location = 1;
+    }
+    
+    message OrientationStatusEvent {
+        Orientation orientation = 1;
+    }
+    
+    message ConnectionStateEvent {
+        bool isConnected = 1;
+    }
+    
+    optional bytes commandUUID = 1;
+    
+    oneof event {
+        CommandCompletedEvent commandCompleted = 2;
+        BatteryStatusEvent batteryStatus = 3;
+        PositionStatusEvent positionStatus = 4;
+        OrientationStatusEvent orientationStatus = 5;
+        ConnectionStateEvent connectionState = 6;
+    }
+}

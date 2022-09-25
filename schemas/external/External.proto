@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+import "common/Domain.proto";
+
+option java_package = "edu.rit.se.sars.communication.proto.external";
+option java_multiple_files = true;
+
+
+message NetworkEntity {
+    enum EntityType {
+        OPERATOR = 0;
+        DRONE = 1;
+    }
+
+    message IPEntity {
+        string host = 1;
+        uint32 port = 2;
+    }
+
+    bytes uuid = 1;
+    EntityType type = 2;
+
+    oneof entity {
+        IPEntity ipEntity = 3;
+    }
+}
+
+message PointTask {
+    GeoLocation2D location = 1;
+    Orientation gimbalOrientation = 2;
+    optional double headingDegrees = 3;
+    double zoomLevel = 4;
+}
+
+enum TargetType {
+    PERSON = 0;
+}
+
+message SwarmMessage {
+
+    message AcknowledgementMessage {
+        bytes acknowledgedUUID = 1;
+    }
+
+    message PingMessage {}
+
+    message MissionDefinitionMessage {
+        GeoPolygon searchArea = 1;
+        double minAltitudeMeters = 2;
+        double altitudeSeparationMeters = 3;
+        TargetType targetType = 4;
+        repeated NetworkEntity networkEntities = 5;
+    }
+    
+    message CoverageStateMessage {
+        message PointAssignment {
+            uint32 pointID = 1;
+            bytes droneUUID = 2;
+            PointTask pointTask = 3;
+        }
+
+        message AltitudeAssignment {
+            bytes droneUUID = 1;
+            double altitudeMeters = 2;
+        }
+
+        uint32 version = 1;
+        repeated PointAssignment remainingPointAssignments = 2;
+        repeated AltitudeAssignment altitudeAssignments = 3;
+    }
+    
+    message LocationQueryMessage {}
+    
+    message LocationStatusMessage {
+        GeoLocation3D location = 1;
+    }
+    
+    message PointCompletedMessage {
+        uint32 pointID = 1;
+    }
+    
+    message TargetDetectionMessage {
+        bytes detectionUUID = 1;
+        uint64 timestamp = 2;
+        GeoLocation2D location = 3;
+        double confidence = 4;
+        
+        uint32 chunkIndex =  5;
+        uint32 numChunks = 6;
+        bytes imageChunk = 7;
+    }
+    
+    message FocusDetectionCandidateMessage {
+        bytes detectionUUID = 1;
+        PointTask focusPointTask = 2;
+    }
+    
+    message FocusDetectionMessage {
+        bytes detectionUUID = 1;
+    }
+    
+    message ReturnHomeMessage {}
+    
+    message RemoveDroneMessage {
+        NetworkEntity drone = 1;
+    }
+
+    oneof message {
+        AcknowledgementMessage acknowledgement = 1;
+        PingMessage ping = 2;
+        MissionDefinitionMessage missionDefinition = 3;
+        CoverageStateMessage coverageState = 4;
+        LocationQueryMessage locationQuery = 5;
+        LocationStatusMessage locationStatus = 6;
+        PointCompletedMessage pointCompleted = 7;
+        TargetDetectionMessage targetDetection = 8;
+        FocusDetectionCandidateMessage focusDetectionCandidate = 9;
+        FocusDetectionMessage focusDetection = 10;
+        ReturnHomeMessage returnHome = 11;
+        RemoveDroneMessage removeDrone = 12;
+    }
+}
+
+message SwarmMessageEnvelope {
+    bytes uuid = 1;
+    NetworkEntity fromEntity = 2;
+    optional NetworkEntity toEntity = 3;
+    
+    SwarmMessage message = 4;
+}

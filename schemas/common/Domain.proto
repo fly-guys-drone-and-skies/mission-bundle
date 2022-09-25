@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "edu.rit.se.sars.communication.proto.common.domain";
+option java_multiple_files = true;
+
+
+message GeoLocation3D {
+    double latitude = 1;
+    double longitude = 2;
+    double altitudeMeters = 3;
+}
+
+message GeoLocation2D {
+    double latitude = 1;
+    double longitude = 2;
+}
+
+message GeoPolygon {
+    repeated GeoLocation2D vertices = 1;
+}
+
+message Orientation {
+    double pitchDegrees = 1;
+    double yawDegrees = 2;
+    double rollDegrees = 3;
+}

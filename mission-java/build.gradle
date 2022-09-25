@@ -1,0 +1,53 @@
+plugins {
+    id "io.freefair.lombok" version "5.3.0"
+    id 'java'
+}
+
+group 'edu.rit.se.sars'
+version '0.1.0'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+
+dependencies {
+    // Communication
+    compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.13.0'
+    compile group: 'org.zeromq', name: 'jeromq', version: '0.5.2'
+
+    // Search algorithm
+    // https://mvnrepository.com/artifact/com.google.ortools/ortools-java
+    implementation group: 'com.google.ortools', name: 'ortools-java', version: '9.3.10497'
+
+
+    // CV
+    implementation group: 'org.openpnp', name: 'opencv', version: '4.5.1-0'
+
+    // Web
+    compile group: 'com.sparkjava', name: 'spark-core', version: '2.9.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.2'
+
+    // Logging
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    runtimeClasspath group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
+    testRuntimeClasspath group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
+
+    // Dependency injection
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
+
+    // Misc utilities
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
+    // Testing
+    testCompile group: 'junit', name: 'junit', version: '4.13.1'
+}

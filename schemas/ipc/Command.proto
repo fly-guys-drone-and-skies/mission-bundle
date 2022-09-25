@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+import "common/Domain.proto";
+
+option java_package = "edu.rit.se.sars.communication.proto.ipc.command";
+option java_multiple_files = true;
+
+
+message Command {
+    message TakeoffCommand {}
+
+    message LandCommand {}
+
+    message MoveToCommand {
+      GeoLocation3D toLocation = 1;
+      optional double headingDegrees = 2;
+    }
+
+    message MoveGimbalCommand {
+      Orientation toOrientation = 1;
+    }
+
+    message ChangeZoomLevelCommand {
+      double zoomLevel = 1;
+    }
+    
+    message GetPositionCommand {}
+    
+    message GetOrientationCommand {}
+    
+    message GetConnectionStateCommand {}
+
+    bytes uuid = 1;
+    oneof command {
+      TakeoffCommand takeoff = 2;
+      LandCommand land = 3;
+      MoveToCommand moveTo = 4;
+      MoveGimbalCommand moveGimbal = 5;
+      ChangeZoomLevelCommand changeZoomLevel = 6; 
+      GetPositionCommand getPosition = 7;
+      GetOrientationCommand getOrientation = 8;
+      GetConnectionStateCommand getConnectionState = 9;
+    }
+}

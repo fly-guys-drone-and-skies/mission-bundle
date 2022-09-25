@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet-draw@0.4.13/dist/leaflet.draw.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css"/>
+        <link type="text/css" rel="stylesheet" href="/style/index.css"/>
+        
+        <!-- Map Scripts -->
+        <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+        <script src="https://unpkg.com/leaflet-draw@0.4.13/dist/leaflet.draw.js"></script>
+        <!-- Design/Utility Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+        <title>Operator Interface</title>
+    </head>
+    <body>
+        <div class="container container-row-margin">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div id="map" class="map"></div>
+                    </div>
+                    <div class="row">
+                        <div class="card no-padding">
+                            <div class="card-header">Detections</div>
+                            <table id="detections-table" class="card-body">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-class="hidden">ID</th>
+                                        <th data-field="timestamp">Timestamp</th>
+                                        <th data-field="confidence">Confidence</th>
+                                        <th data-field="location">Location</th>
+                                        <th data-field="view">Options</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-padding">
+                    <div class="row">
+                        <div class="card no-padding">
+                            <div class="card-header">Mission</div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="input-mission-altitude">Minimum altitude (m)</label>
+                                    <input type="number" step="0.1" class="form-control" id="input-mission-altitude" value="45.7">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-mission-altitude-sep">Altitude separation (m)</label>
+                                    <input type="number" step="0.1" class="form-control" id="input-mission-altitude-sep" value="1.5">
+                                </div>
+                            </div>
+                            <button id="button-start-mission" type="button" class="btn btn-success full-width">Start</button>
+                            <button id="button-end-mission" type="button" class="btn btn-danger full-width hidden">End</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="card no-padding">
+                            <div class="card-header">Drones</div>
+                            <table id="drones-table">
+                                <thead>
+                                    <tr>
+                                        <th data-field="host">Host</th>
+                                        <th data-field="port">Port</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <button id="button-open-add-drone-modal" type="button" class="btn btn-success full-width" data-bs-toggle="modal" data-bs-target="#add-drone-modal">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add-drone-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Drone</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-drone-host">Host</label>
+                            <input type="text" class="form-control" id="input-drone-host" placeholder="127.0.0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-drone-port">Port</label>
+                            <input type="number" class="form-control" id="input-drone-port" placeholder="12345">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="button-add-drone" type="button" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="view-detection-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detection Verification</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="image-detection" class="full-width"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="button-valid-detection" type="button" class="btn btn-success" data-bs-dismiss="modal">Valid</button>
+                        <button id="button-focus-detection" type="button" class="btn btn-warning" data-bs-dismiss="modal">Focus</button>
+                        <button id="button-invalid-detection" type="button" class="btn btn-danger" data-bs-dismiss="modal">Invalid</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+        <script src="/js/map.js"></script>
+        <script src="/js/index.js"></script>
+    </body>
+</html>
